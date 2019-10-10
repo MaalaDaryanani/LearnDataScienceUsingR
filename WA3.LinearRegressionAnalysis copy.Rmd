@@ -1,0 +1,65 @@
+---
+title: "Linear Regression - Analysis"
+output: pdf_document
+---
+
+We're going to pick up where we left off at the end of the exploration and define a linear model with two independent variables determining the dependent variable, Interest Rate.
+
+Our investigation is now defined as:
+
+Investigate FICO Score and Loan Amount as predictors of Interest Rate for the Lending Club sample of 2,500 loans.
+
+We use Multivariate Linear Regression to model Interest Rate variance with FICO Score and Loan Amount using:
+
+InterestRate = $a_{0} + a_{1} * FICOScore + a_{2} * LoanAmount$
+
+We're going to use modeling software to generate the model coefficients $a_{0}$, $a_{1}$ and $a_{2}$ and then some error estimates that we'll only touch upon lightly at this point.
+
+
+```{r setup, warning=FALSE, include=FALSE}
+library(rmarkdown)
+library(pander)
+library(ggplot2)
+library(readr)
+
+#Import the clean data set 
+df_loansf_1 = read_csv("./datasets/loanf_1.csv")
+df_loansf_1 <-as.data.frame(df_loansf_1)
+attach(df_loansf_1)
+```
+
+```{r}
+# Fit model
+fit_linear_model <- lm(Interest.Rate ~ FICO.Score+Loan.Amount, data = df_loansf_1)
+```
+
+```{r}
+#Summary:
+summary(fit_linear_model)
+```
+
+```{r}
+#Analysis of Variance Table:
+anova(fit_linear_model)
+```
+
+So we have a lot of numbers here and we're going to understand some of them.
+
+Coefficients: contains $a_{1}$ and $a_{2}$ respectively.
+Intercept: is the $a_{0}$.
+
+How good are these numbers, how reliable? We need to have some idea. After all we are estimating. We're going to learn a very simple pragmatic way to use a couple of these.
+
+Let's look at the second two numbers.
+We are going to talk loosely here so as to give some flavor of why these are important. But this is by no means a formal explanation.
+
+P-Values are probabilities. Informally, each number represents a probability that the respective coefficient we have is a really bad one. To be fairly confident we want this probability to be close to zero. The convention is it needs to be 0.05 or less. For now suffice it to say that if we have this true for each of our coefficients then we have good confidence in the model. If one or other of the coefficients is equal to or greater than 0.05 then we have less confidence in that particular dimension being useful in modeling and predicting.
+
+R-squared or $R^2$ is a measure of how much of the variance in the data is captured by the model. What does this mean? For now let's understand this as a measure of how well the model captures the spread of the observed values not just the average trend.
+
+R is a coefficient of correlation between the independent variables and the dependent variable - i.e. how much the Y depends on the separate X's. R lies between -1 and 1, so $R^2$ lies between 0 and 1.
+
+A high $R^2$ would be close to 1.0 a low one close to 0. The value we have, 0.65, is a reasonably good one. It suggests an R with absolute value in the neighborhood of 0.8. The details of these error estimates deserve a separate discussion which we defer until another time.
+
+In summary we have a linear multivariate regression model for Interest Rate based on FICO score and Loan Amount which is well described by the parameters above.
+

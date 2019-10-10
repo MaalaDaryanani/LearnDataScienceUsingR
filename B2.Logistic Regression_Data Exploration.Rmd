@@ -1,0 +1,8 @@
+---
+title: "This is a placeholder"
+output: pdf_document
+---
+
+The data set used is the same as in Linear Regression where the data exploration was done in depth.
+So this section is just a place holder and the content is identical to the data exploration lesson in Linear Regression.
+Should we use a different data set for Logistic Regression in future, this is where the data exploration will go.
